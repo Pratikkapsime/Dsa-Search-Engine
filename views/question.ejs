@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Search Engine</title>
+
+<body>
+
+    <header class="header">
+        <a href=/index>
+            <h2 class="header__logo"><img
+                    src="https://lh3.googleusercontent.com/-TxE8f63FlOY/VpApgpuCimI/AAAAAAAAMgw/-dLoanOsUtI/s1000-Ic42/imageedit_1_2973554234.gif"
+                    alt="normal" width="200" height="50"></h2>
+        </a>
+        <div class="header__search">
+            <form action="/index" method="POST">
+                <input type="text" name="name" placeholder="Search by problem" required>
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+    </header>
+
+    <div class="problem_on_search">
+        <% if (body.length> 1) { %>
+            <% for(var cnt=0; cnt < body.length; cnt++) { %>
+    
+                <a class="problem_url" href=<%-body[cnt]['problem_url'] %>><%= body[cnt]['problem_title'] %> </a>
+                <p class="problem_description">
+                    <%= body[cnt]['problem_desc'] %>
+                </p><br />
+                <% } %>
+                    <% } else { %>
+                        <p>Could not find related problem :(</p>
+                        <% } %>
+    
+    </div>
+</body>
+
+</html>
