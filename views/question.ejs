@@ -12,23 +12,23 @@
 
     <header class="header">
         <a href=/index>
-            <h2 class="header__logo"><img
+            <h3 class="search_logo"><img
                     src="https://lh3.googleusercontent.com/-TxE8f63FlOY/VpApgpuCimI/AAAAAAAAMgw/-dLoanOsUtI/s1000-Ic42/imageedit_1_2973554234.gif"
-                    alt="normal" width="200" height="50"></h2>
+                    alt="normal" width="200" height="50"></h3>
         </a>
-        <div class="header__search">
+        <div class="search_bar">
             <form action="/index" method="POST">
-                <input type="text" name="name" placeholder="Search by problem" required>
-                <input type="submit" value="Search">
+                <input type="text" name="question" placeholder="Search dsa problem" required>
+                <input type="submit" value="find another">
             </form>
         </div>
 
     </header>
 
-    <div class="problem_on_search">
+    <div class="problem_searched">
         <% if (body.length> 1) { %>
             <% for(var cnt=0; cnt < body.length; cnt++) { %>
-    
+
                 <a class="problem_url" href=<%-body[cnt]['problem_url'] %>><%= body[cnt]['problem_title'] %> </a>
                 <p class="problem_description">
                     <%= body[cnt]['problem_desc'] %>
@@ -37,8 +37,13 @@
                     <% } else { %>
                         <p>Could not find related problem :(</p>
                         <% } %>
-    
+
     </div>
 </body>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
 
 </html>

@@ -27,18 +27,20 @@ app.use(express.json());
 app.set("view engine", "ejs");
 app.use(bodyParser.json())
 app.use(express.static('public'));
+app.use(express.urlencoded({extended:true}));
 
 //Assigning Port to our application
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
 });
-//@GET /
-//description: GET request to home page
+//Routes
+//description: GET request to homepage i.e index.ejs
 app.get("/", (req, res) => {
   res.render("index");
 })
 
+// Extracting data base from mongodb to local 
 var all_keyword = [];
 var mag_docs = [];
 var idf_values = [];
@@ -72,11 +74,11 @@ tf_idf.find((err, doc) => {
         console.log("error");
     }
 })
-
+// where to post data
 app.post('/index', (req, res)=>{
-    console.log(req.body.name);
-    var query = req.body.name;
-    var query_string = query.toLowerCase();
+    // console.log(req.body.question);
+    var query_string = req.body.question;
+    var query_string = query_string.toLowerCase();
 
     var tot_doc = 1737;
     query_string = query_string.replace(/(\r\n|\n|\r)/gm, "");
@@ -96,9 +98,8 @@ app.post('/index', (req, res)=>{
 
     var sz_query_keywords = query_keyword.length;
     var tf_query = [];
-    var cnt = 0;
+    
     all_keyword.forEach(element => {
-        cnt += 1;
         if (mp_query.has(element)) {
             tf_query.push(mp_query.get(element) / sz_query_keywords);
         } else {
@@ -106,61 +107,56 @@ app.post('/index', (req, res)=>{
         }
     });
     var tf_idf_query = [];
-    var cbt_zero = 0;
+
     for (var i = 0; i < idf_values.length; i++) {
         tf_idf_query.push(tf_query[i] * idf_values[i]);
     }
     var tf_value_doc = [];
-    for (var i = 0; i < x; i++) {
+    for (var i = 0; i < tot_doc; i++) {
         var values = [];
-        for (var j = 0; j < tf_idf_matrix.length / x; j++) {
-            values.push(tf_idf_matrix[(tf_idf_matrix.length / x) * i + j]);
+        for (var j = 0; j < all_keyword.length; j++) {
+            values.push(tf_idf_matrix[all_keyword.length * i + j]);
         }
         tf_value_doc.push(values);
     }
-
     var mag_query = 0;
     for (var i = 0; i < idf_values.length; i++) {
         if (tf_idf_query[i] > 0) {
-            cbt_zero++;
             mag_query += tf_idf_query[i] * tf_idf_query[i];
         }
     }
     mag_query = Math.sqrt(mag_query);
 
-    var mp_cosine_values = new Map();
-    for (var i = 0; i < tf_value_doc.length; i++) {
+    var selectivity_values = new Map();
+    for (var i = 0; i < tot_doc; i++) {
         var val = 0;
-        for (var j = 0; j < tf_value_doc[0].length; j++) {
-
+        for (var j = 0; j < all_keyword.length; j++) {
             if (!isNaN(tf_idf_query[j])) {
                 val += tf_value_doc[i][j] * tf_idf_query[j];
             }
         }
         val = val / mag_docs[i];
         val = val / mag_query;
-        mp_cosine_values.set(val, i + 1);
+        selectivity_values.set(val, i + 1); // Si,doc no.
     }
 
-    var mapAsc = new Map([...mp_cosine_values.entries()].sort().reverse());
-    var query_keys = [];
+    var selectivity_order = new Map([...selectivity_values.entries()].sort().reverse());
+    var doc_order = [];
 
-    mapAsc.forEach((key, value) => {
-        query_keys.push(key);
-        // console.log(key);
+    selectivity_order.forEach((key, value) => {
+        doc_order.push(key);
+        // console.log(value);
     })
-    // console.log(query_keys.length);
     async function dbData() {
         try {
             var data = [];
-            for (var i = 0; i < Math.min(15, query_keys.length); i++) {
-                // console.log(query_keys[i]);
-                let dbData = await all_problem.find({ problem_id: query_keys[i] });
+            for (var i = 0; i < Math.min(5, doc_order.length); i++) {
+                // console.log(doc_order[i]);
+                let dbData = await all_problem.find({ problem_id: doc_order[i] });
                 if (typeof dbData[0] !== 'undefined')
                 {
                     data.push(dbData[0]);
                 }
-                
             }
             return data;
         }
@@ -170,8 +166,7 @@ app.post('/index', (req, res)=>{
     }
     (async function () {
         const doc = await dbData()
-        console.log(doc);
-        
+        // console.log(doc);
         res.render('question', {body: doc});
 
     })();

@@ -7,31 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Search Engine</title>
     <link rel="stylesheet" href="./style.css" />
-    
+
 
 </head>
 
 <body>
     <header class="header">
         <a href=/index>
-            <h2 class="header__logo"><img src="https://lh3.googleusercontent.com/-TxE8f63FlOY/VpApgpuCimI/AAAAAAAAMgw/-dLoanOsUtI/s1000-Ic42/imageedit_1_2973554234.gif"
-                alt="normal" width="300" height="200"></h2>
+            <h2 class="header__logo"><img
+                    src="https://lh3.googleusercontent.com/-TxE8f63FlOY/VpApgpuCimI/AAAAAAAAMgw/-dLoanOsUtI/s1000-Ic42/imageedit_1_2973554234.gif"
+                    alt="normal" width="300" height="200"></h2>
         </a>
     </header>
+    <!-- form action-> where we want to send req to -->
     <form action="/index" method="POST">
-        <input type="text" name="question" placeholder="Search dsa problem"required>
+        <input type="text" name="question" placeholder="Search dsa problem" required>
         <br>
         <input type="submit" value="Let's Find">
         </br>
 
     </form>
-    
+
     <div class="loading"></div>
-<script>
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
-</script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </body>
 
 </html>
@@ -71,4 +73,4 @@
             alert(error);
         }
     });
-</script> --> 
+</script> -->
