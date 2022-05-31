@@ -111,13 +111,18 @@ app.post('/index', (req, res)=>{
     for (var i = 0; i < idf_values.length; i++) {
         tf_idf_query.push(tf_query[i] * idf_values[i]);
     }
-    var tf_value_doc = [];
+    var tf_idf_doc = [];
     for (var i = 0; i < tot_doc; i++) {
         var values = [];
         for (var j = 0; j < all_keyword.length; j++) {
-            values.push(tf_idf_matrix[all_keyword.length * i + j]);
+            if(tf_idf_matrix[all_keyword.length * i + j]=="NUN"){
+                values.push(0);
+            }
+            else{
+                values.push(tf_idf_matrix[all_keyword.length * i + j]);
+            }
         }
-        tf_value_doc.push(values);
+        tf_idf_doc.push(values);
     }
     var mag_query = 0;
     for (var i = 0; i < idf_values.length; i++) {
@@ -132,7 +137,7 @@ app.post('/index', (req, res)=>{
         var val = 0;
         for (var j = 0; j < all_keyword.length; j++) {
             if (!isNaN(tf_idf_query[j])) {
-                val += tf_value_doc[i][j] * tf_idf_query[j];
+                val += tf_idf_doc[i][j] * tf_idf_query[j];
             }
         }
         val = val / mag_docs[i];

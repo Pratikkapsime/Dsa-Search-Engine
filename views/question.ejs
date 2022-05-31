@@ -11,10 +11,10 @@
 <body>
 
     <header class="header">
-        <a href=/index>
-            <h3 class="search_logo"><img
-                    src="https://lh3.googleusercontent.com/-TxE8f63FlOY/VpApgpuCimI/AAAAAAAAMgw/-dLoanOsUtI/s1000-Ic42/imageedit_1_2973554234.gif"
-                    alt="normal" width="200" height="50"></h3>
+        <a href= />
+        <h2 class="search_logo"><img
+                src="https://lh3.googleusercontent.com/-TxE8f63FlOY/VpApgpuCimI/AAAAAAAAMgw/-dLoanOsUtI/s1000-Ic42/imageedit_1_2973554234.gif"
+                alt="normal" width="200" height="50"></h2>
         </a>
         <div class="search_bar">
             <form action="/index" method="POST">
@@ -29,13 +29,17 @@
         <% if (body.length> 1) { %>
             <% for(var cnt=0; cnt < body.length; cnt++) { %>
 
-                <a class="problem_url" href=<%-body[cnt]['problem_url'] %>><%= body[cnt]['problem_title'] %> </a>
+                <a class="problem_url" href=<%-body[cnt]['problem_url'] %>><strong>
+                        <%= body[cnt]['problem_title'] %>
+                    </strong> </a>
                 <p class="problem_description">
                     <%= body[cnt]['problem_desc'] %>
                 </p><br />
                 <% } %>
                     <% } else { %>
-                        <p>Could not find related problem :(</p>
+                        <p><strong>
+                                <h2>Could not find related problem :(</h2>
+                            </strong></p>
                         <% } %>
 
     </div>

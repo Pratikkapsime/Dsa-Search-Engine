@@ -1,17 +1,25 @@
 body {
     background: rgb(176, 240, 208);
+    font-size: 14px;
+    font-family: 'Helvetica', sans-serif;
+    padding: 0 15px;
+    line-height: 32px;
+    color: rgb(14, 13, 13);
+    border-radius: 16px;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 h2 {
     /* color: rgb(145, 255, 0); */
     text-align: center;
-    
-}
-form{
-    text-align: center;
-    
-    /* color: r
-    gb(255, 127, 217); */
-    
+
 }
 
+form {
+    text-align: center;
+
+    /* color: r
+    gb(255, 127, 217); */
+
+}
